@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 const path = require('path');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Serve static files from the current directory
 app.use(express.static(__dirname));
