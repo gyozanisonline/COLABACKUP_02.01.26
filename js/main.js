@@ -82,7 +82,9 @@ window.app = {
 
         // Update Panels
         this.panels.forEach((panel) => {
-            panel.classList.add('hidden');
+            if (panel.id && panel.id.startsWith('controls-step-')) {
+                panel.classList.add('hidden');
+            }
         });
         const activePanel = document.getElementById(`controls-step-${step}`);
         if (activePanel) activePanel.classList.remove('hidden');

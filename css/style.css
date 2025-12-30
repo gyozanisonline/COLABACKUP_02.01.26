@@ -104,7 +104,10 @@ header h1 {
     margin-bottom: 15px;
 }
 
-.controls-group
+.controls-group.hidden {
+    display: none;
+}
+
 
 /* Multiplayer Cursors */
 .remote-cursor {
