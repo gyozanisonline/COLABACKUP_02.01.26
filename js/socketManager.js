@@ -7,15 +7,31 @@ let myName = localStorage.getItem('playerName') || 'Guest';
 let myColor = localStorage.getItem('playerColor') || '#' + Math.floor(Math.random() * 16777215).toString(16);
 
 // Init Inputs (Moved inside DOMContentLoaded)
+let cursorContainer; // Global scope for socket handlers
+
 document.addEventListener('DOMContentLoaded', () => {
     const nameInput = document.getElementById('player-name');
     const colorInput = document.getElementById('player-color');
+
+    function forceUpdate() {
+        socket.emit('mouse_move', {
+            x: 0.5, // Center/Default or keep last position if we tracked it? 
+            // Better to track last position, but for now 0.5 is safe or we can just send update event
+            // actually 'mouse_move' expects x/y. 
+            // Let's use a global lastX/lastY to be accurate
+            x: window.lastMouseX || 0.5,
+            y: window.lastMouseY || 0.5,
+            color: myColor,
+            name: myName
+        });
+    }
 
     if (nameInput) {
         nameInput.value = myName === 'Guest' ? '' : myName;
         nameInput.addEventListener('input', (e) => {
             myName = e.target.value || 'Guest';
             localStorage.setItem('playerName', myName);
+            forceUpdate();
         });
     }
 
@@ -24,10 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
         colorInput.addEventListener('input', (e) => {
             myColor = e.target.value;
             localStorage.setItem('playerColor', myColor);
+            forceUpdate();
         });
     }
 
-    const cursorContainer = document.createElement('div');
+    cursorContainer = document.createElement('div');
     cursorContainer.id = 'cursor-layer';
     cursorContainer.style.position = 'fixed';
     cursorContainer.style.top = '0';
@@ -42,11 +59,21 @@ document.addEventListener('DOMContentLoaded', () => {
 // Track and Emit Mouse Movement (Throttled)
 let lastEmit = 0;
 document.addEventListener('mousemove', (e) => {
+    // Track global position for forceUpdate
+    window.lastMouseX = e.clientX / window.innerWidth;
+    window.lastMouseY = e.clientY / window.innerHeight;
+
     const now = Date.now();
+
+    // Check high fives interactions
+    if (typeof checkCollisions === 'function') {
+        checkCollisions();
+    }
+
     if (now - lastEmit > 40) { // Limit to ~25fps equivalent
         socket.emit('mouse_move', {
-            x: e.clientX / window.innerWidth,
-            y: e.clientY / window.innerHeight,
+            x: window.lastMouseX,
+            y: window.lastMouseY,
             color: myColor,
             name: myName
         });
@@ -54,8 +81,19 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
+// Remote Cursors Map: { id: { x: 0, y: 0, lastHighFive: 0 } }
+const remoteCursors = {};
+
 // Render Remote Cursors
 socket.on('remote_mouse_move', (data) => {
+    // Update data map
+    if (!remoteCursors[data.id]) {
+        remoteCursors[data.id] = { x: data.x, y: data.y, lastHighFive: 0 };
+    } else {
+        remoteCursors[data.id].x = data.x;
+        remoteCursors[data.id].y = data.y;
+    }
+
     let cursor = document.getElementById(`cursor-${data.id}`);
 
     // Create cursor if new
@@ -97,15 +135,59 @@ socket.on('remote_mouse_move', (data) => {
     const label = cursor.querySelector('.cursor-label');
     if (label) {
         label.innerText = data.name || 'Guest';
-        // Optional: Hide label if it's strictly "Guest" to reduce clutter, or keep it.
-        // label.style.display = data.name ? 'block' : 'none'; 
     }
 });
 
 socket.on('remote_mouse_remove', (data) => {
     const cursor = document.getElementById(`cursor-${data.id}`);
     if (cursor) cursor.remove();
+    delete remoteCursors[data.id];
 });
+
+
+// --- HIGH FIVE COLLISION LOGIC ---
+function spawnHighFive(x, y) {
+    const emoji = document.createElement('div');
+    emoji.innerText = '✋'; // Or '✨'
+    emoji.className = 'high-five-emoji';
+    emoji.style.left = (x * 100) + '%';
+    emoji.style.top = (y * 100) + '%';
+    document.body.appendChild(emoji);
+
+    // Remove after animation
+    setTimeout(() => {
+        emoji.remove();
+    }, 1000);
+}
+
+function checkCollisions() {
+    const myX = window.lastMouseX;
+    const myY = window.lastMouseY;
+    if (myX === undefined || myY === undefined) return;
+
+    const threshold = 0.05; // ~5% of screen width distance
+    const now = Date.now();
+
+    for (const id in remoteCursors) {
+        const remote = remoteCursors[id];
+        // Euclidean distance
+        const dist = Math.hypot(myX - remote.x, myY - remote.y);
+
+        if (dist < threshold) {
+            // Collision! Check cooldown
+            if (now - remote.lastHighFive > 2000) {
+                spawnHighFive(myX, myY);
+                // Mark cooldown for THIS remote user
+                remote.lastHighFive = now;
+                console.log("High Five with", id);
+            }
+        }
+    }
+}
+
+// Check for high fives more frequently than emit? Or same loop?
+// Let's hook into the mousemove loop since we have it.
+
 
 
 // --- LISTEN FOR UPDATES FROM SERVER ---

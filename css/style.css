@@ -305,6 +305,29 @@ input[type="text"] {
     font-weight: bold;
 }
 
-#chat-send:active {
-    transform: scale(0.95);
+/* High Five Effect */
+.high-five-emoji {
+    position: fixed;
+    font-size: 3rem;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    animation: highFivePop 1s ease-out forwards;
+}
+
+@keyframes highFivePop {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5) rotate(-20deg);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.5) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(2) translateY(-50px);
+        opacity: 0;
+    }
 }

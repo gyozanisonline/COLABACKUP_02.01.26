@@ -45,7 +45,8 @@ io.on('connection', (socket) => {
             id: socket.id,
             x: data.x,
             y: data.y,
-            color: data.color || '#ff0000' // Fallback color
+            color: data.color || '#ff0000', // Fallback color
+            name: data.name
         });
     });
 
