@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Silk from './components/Silk';
+import SplineBackground from './components/SplineBackground';
 
 function App() {
     const [activeBackground, setActiveBackground] = useState('silk'); // Default to Silk
@@ -18,9 +19,8 @@ function App() {
     return (
         <div style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
             {activeBackground === 'silk' && <Silk color="#00ffcc" speed={2.5} />}
-            {/* Add more React backgrounds here:
-          {activeBackground === 'ballpit' && <BallPit ... />} 
-      */}
+            {activeBackground === 'spline' && <SplineBackground />}
+            {activeBackground === 'spline_new' && <SplineBackground sceneUrl="https://prod.spline.design/Gc46LQNHKmMSkOyq/scene.splinecode" />}
         </div>
     );
 }

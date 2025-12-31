@@ -54,16 +54,19 @@ window.app = {
                 // 3. Toggle Control Panels
                 const silkControls = document.getElementById('bg-controls-silk');
                 const wireframeControls = document.getElementById('bg-controls-wireframe');
+                const splineControls = document.getElementById('bg-controls-spline');
+
+                // Hide all first
+                if (wireframeControls) wireframeControls.style.display = 'none';
+                if (silkControls) silkControls.style.display = 'none';
+                if (splineControls) splineControls.style.display = 'none';
 
                 if (type === 'wireframe') {
                     if (wireframeControls) wireframeControls.style.display = 'block';
-                    if (silkControls) silkControls.style.display = 'none';
                 } else if (type === 'silk') {
-                    if (wireframeControls) wireframeControls.style.display = 'none';
                     if (silkControls) silkControls.style.display = 'block';
-                } else {
-                    if (wireframeControls) wireframeControls.style.display = 'none';
-                    if (silkControls) silkControls.style.display = 'none';
+                } else if (type === 'spline' || type === 'spline_new') {
+                    if (splineControls) splineControls.style.display = 'block';
                 }
 
                 if (window.emitChange) window.emitChange('param', 'bg-type', type);
