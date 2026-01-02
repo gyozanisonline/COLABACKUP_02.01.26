@@ -3,7 +3,7 @@ import Silk from './components/Silk';
 import SplineBackground from './components/SplineBackground';
 
 function App() {
-    const [activeBackground, setActiveBackground] = useState('silk'); // Default to Silk
+    const [activeBackground, setActiveBackground] = useState('wireframe'); // Default to Wireframe
 
     useEffect(() => {
         // Listen for custom event from Vanilla JS

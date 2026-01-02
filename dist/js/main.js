@@ -21,6 +21,13 @@ window.app = {
             // We just ensure it's there.
         }
 
+        // Initialize Background State
+        const bgTypeSelect = document.getElementById('bg-type-select');
+        if (bgTypeSelect) {
+            // Trigger change to sync UI panels
+            bgTypeSelect.dispatchEvent(new Event('change'));
+        }
+
         this.setStep(1);
     },
 
