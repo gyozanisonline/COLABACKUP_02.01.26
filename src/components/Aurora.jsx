@@ -2,12 +2,13 @@ import React from 'react';
 import { useControls } from 'leva';
 
 export default function Aurora() {
-    const { bg, color1, color2, color3, speed } = useControls('Aurora', {
+    const { bg, color1, color2, color3, speed, blobSize } = useControls('Aurora', {
         bg: '#000000',
         color1: '#ff00cc',
         color2: '#3333ff',
         color3: '#00ffcc',
-        speed: { value: 10, min: 2, max: 30 }
+        speed: { value: 10, min: 2, max: 30 },
+        blobSize: { value: 60, min: 30, max: 100, label: 'Blob Size (%)' }
     });
 
     const styles = {
@@ -30,24 +31,24 @@ export default function Aurora() {
         blob1: {
             top: '-10%',
             left: '-10%',
-            width: '50vw',
-            height: '50vw',
+            width: `${blobSize}vw`,
+            height: `${blobSize}vw`,
             background: color1,
             animationDelay: '0s',
         },
         blob2: {
             top: '20%',
             right: '-20%',
-            width: '60vw',
-            height: '60vw',
+            width: `${blobSize * 1.2}vw`,
+            height: `${blobSize * 1.2}vw`,
             background: color2,
             animationDelay: '2s',
         },
         blob3: {
             bottom: '-20%',
             left: '20%',
-            width: '70vw',
-            height: '70vw',
+            width: `${blobSize * 1.4}vw`,
+            height: `${blobSize * 1.4}vw`,
             background: color3,
             animationDelay: '4s',
         }
