@@ -128,7 +128,7 @@ const Silk = ({ speed: defaultSpeed = 5, scale: defaultScale = 1, color: default
     });
 
     return (
-        <Canvas dpr={[1, 2]} frameloop="always" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: -1 }}>
+        <Canvas dpr={[1, 2]} frameloop="always" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
             <SilkPlane ref={meshRef} uniforms={uniforms} />
         </Canvas>
     );
