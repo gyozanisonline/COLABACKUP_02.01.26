@@ -338,3 +338,42 @@ input[type="text"] {
         opacity: 0;
     }
 }
+
+/* Leva Panel Styling */
+.leva-c-kWgxhW,
+[class*="leva-c-"] {
+    font-family: 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Position Leva panel in top-right corner */
+.leva-c-kWgxhW {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 9998 !important;
+    /* Below chat but above everything else */
+}
+
+/* Ensure Leva is accessible in poster mode */
+.poster-active .leva-c-kWgxhW {
+    position: fixed !important;
+    /* Keep it fixed even in poster mode */
+}
+
+/* Custom scrollbar for Leva */
+.leva-c-kWgxhW ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.leva-c-kWgxhW ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.leva-c-kWgxhW ::-webkit-scrollbar-thumb {
+    background: rgba(242, 62, 46, 0.5);
+    border-radius: 4px;
+}
+
+.leva-c-kWgxhW ::-webkit-scrollbar-thumb:hover {
+    background: rgba(242, 62, 46, 0.8);
+}

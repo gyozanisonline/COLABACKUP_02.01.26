@@ -1,4 +1,3 @@
-```javascript
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Box, OrbitControls } from '@react-three/drei';
@@ -48,4 +47,3 @@ export default function Blocks() {
         </div>
     );
 }
-```
