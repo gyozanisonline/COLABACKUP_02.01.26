@@ -16,10 +16,9 @@ We welcome contributions! Here's how to get started:
    git add .
    git commit -m "Add cool new feature"
    ```
-6. **Push**: Push your branch to the remote.
-   ```bash
-   git push origin feature/my-new-feature
-   ```
+6. **Push**: Follow the [Pre-Push Guide](./PRE_PUSH_GUIDE.md).
+   - Push to `backup_repo` FIRST.
+   - Push to `origin` SECOND.
 7. **Pull Request**: Open a Pull Request on GitHub.
 
 ## Coding Style
