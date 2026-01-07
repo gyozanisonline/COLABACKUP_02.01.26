@@ -4,6 +4,32 @@ window.app = {
     init: function () {
         this.cacheDOM();
         this.bindEvents();
+
+        // Listen for App Switching from React
+        window.addEventListener('app-changed', (e) => {
+            const appId = e.detail.app;
+            console.log('App Changed to:', appId);
+            const uiOverlay = document.getElementById('controls-panel');
+            const stepNav = document.getElementById('step-nav');
+            const typeCanvas = document.getElementById('canvas-type');
+
+            if (appId === 'typeflow') {
+                if (uiOverlay) uiOverlay.classList.remove('hidden-app');
+                if (stepNav) stepNav.classList.remove('hidden-app');
+                if (typeCanvas) typeCanvas.style.display = 'block';
+                // Also ensure background (p5) state is restored if needed
+            } else {
+                if (uiOverlay) uiOverlay.classList.add('hidden-app');
+                if (stepNav) stepNav.classList.add('hidden-app');
+                if (typeCanvas) typeCanvas.style.display = 'none';
+
+                // If switching away, hide p5 background too, 
+                // but let React handle its own background visibility via activeApp check.
+                const p5Canvas = document.getElementById('canvas-background');
+                if (p5Canvas) p5Canvas.style.display = 'none';
+            }
+        });
+
         // Initialize preset buttons
         document.querySelectorAll('.presets button').forEach(btn => {
             btn.addEventListener('click', (e) => {

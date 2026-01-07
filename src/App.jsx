@@ -8,9 +8,11 @@ import Particles from './components/Particles';
 import ColorBends from './components/ColorBends';
 import DarkVeil from './components/DarkVeil';
 import Dither from './components/Dither';
+import Navigation from './components/Navigation';
 
 function App() {
     const [activeBackground, setActiveBackground] = useState('wireframe'); // Default to Wireframe
+    const [activeApp, setActiveApp] = useState('typeflow');
 
     useEffect(() => {
         const handleBgChange = (e) => {
@@ -21,20 +23,73 @@ function App() {
         return () => window.removeEventListener('change-background-type', handleBgChange);
     }, []);
 
-    // NOTE: Leva controls appear automatically when components mount.
+    const handleSwitchApp = (appId) => {
+        setActiveApp(appId);
+        // Dispatch event for non-React parts (e.g., main.js) to hide/show UI
+        window.dispatchEvent(new CustomEvent('app-changed', { detail: { app: appId } }));
+    };
 
     return (
-        <div style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
-            {activeBackground === 'silk' && <Silk color="#00ffcc" speed={2.5} />}
-            {activeBackground === 'spline' && <SplineBackground />}
-            {activeBackground === 'spline_new' && <SplineBackground sceneUrl="https://prod.spline.design/Gc46LQNHKmMSkOyq/scene.splinecode" />}
-            {activeBackground === 'starfield' && <StarField />}
-            {activeBackground === 'aurora' && <Aurora />}
-            {activeBackground === 'blocks' && <Blocks />}
-            {activeBackground === 'particles' && <Particles />}
-            {activeBackground === 'color_bends' && <ColorBends />}
-            {activeBackground === 'dark_veil' && <DarkVeil />}
-            {activeBackground === 'dither' && <Dither />}
+        <div style={{ width: '100%', height: '100%' }}>
+            <Navigation activeApp={activeApp} onSwitchApp={handleSwitchApp} />
+
+            {/* Render TypeFlow Backgrounds only if in TypeFlow mode */}
+            {activeApp === 'typeflow' && (
+                <div style={{ width: '100%', height: '100%', pointerEvents: 'none' }}>
+                    {activeBackground === 'silk' && <Silk color="#00ffcc" speed={2.5} />}
+                    {activeBackground === 'spline' && <SplineBackground />}
+                    {activeBackground === 'spline_new' && <SplineBackground sceneUrl="https://prod.spline.design/Gc46LQNHKmMSkOyq/scene.splinecode" />}
+                    {activeBackground === 'starfield' && <StarField />}
+                    {activeBackground === 'aurora' && <Aurora />}
+                    {activeBackground === 'blocks' && <Blocks />}
+                    {activeBackground === 'particles' && <Particles />}
+                    {activeBackground === 'color_bends' && <ColorBends />}
+                    {activeBackground === 'dark_veil' && <DarkVeil />}
+                    {activeBackground === 'dither' && <Dither />}
+                </div>
+            )}
+
+            {activeApp === 'omnichord' && (
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    color: 'white',
+                    fontSize: '2rem',
+                    background: '#222'
+                }}>
+                    🎹 Omnichord App (Coming Soon)
+                </div>
+            )}
+
+            {activeApp === 'roulette' && (
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    color: 'white',
+                    fontSize: '2rem',
+                    background: '#331133'
+                }}>
+                    🎰 Character Roulette (Coming Soon)
+                </div>
+            )}
+
+            {activeApp === 'watertype' && (
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    color: 'white',
+                    fontSize: '2rem',
+                    background: '#112233'
+                }}>
+                    💧 Water Type (Coming Soon)
+                </div>
+            )}
         </div>
     );
 }
