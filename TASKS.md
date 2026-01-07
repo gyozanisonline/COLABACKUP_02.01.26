@@ -1,7 +1,7 @@
 # Project Tasks
 
 ## High Priority
-- [ ] Verify repo synchronization (Remote URL check).
+- [x] Verify repo synchronization (Remote URL check).
 - [ ] Test multiplayer connectivity with new collaborator.
 
 ## Backlog

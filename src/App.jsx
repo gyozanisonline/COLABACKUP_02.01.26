@@ -10,6 +10,8 @@ import DarkVeil from './components/DarkVeil';
 import Dither from './components/Dither';
 import Navigation from './components/Navigation';
 
+import VersionOverlay from './components/VersionOverlay';
+
 function App() {
     const [activeBackground, setActiveBackground] = useState('wireframe'); // Default to Wireframe
     const [activeApp, setActiveApp] = useState('typeflow');
@@ -31,6 +33,7 @@ function App() {
 
     return (
         <div style={{ width: '100%', height: '100%' }}>
+            <VersionOverlay />
             <Navigation activeApp={activeApp} onSwitchApp={handleSwitchApp} />
 
             {/* Render TypeFlow Backgrounds only if in TypeFlow mode */}
